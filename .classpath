@@ -2,29 +2,7 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="lib/sonar-3.3.2/activation-1.1.jar"/>
-	<classpathentry kind="lib" path="lib/sonar-3.3.2/commons-io-2.0.1.jar"/>
-	<classpathentry kind="lib" path="lib/sonar-3.3.2/geronimo-spec-jta-1.0-M1.jar"/>
-	<classpathentry kind="lib" path="lib/sonar-3.3.2/jetty-6.1.25.jar"/>
-	<classpathentry kind="lib" path="lib/sonar-3.3.2/jetty-naming-6.1.25.jar"/>
-	<classpathentry kind="lib" path="lib/sonar-3.3.2/jetty-plus-6.1.25.jar"/>
-	<classpathentry kind="lib" path="lib/sonar-3.3.2/jetty-util-6.1.25.jar"/>
-	<classpathentry kind="lib" path="lib/sonar-3.3.2/servlet-api-2.5-20081211.jar"/>
-	<classpathentry kind="lib" path="lib/sonar-3.3.2/wrapper-3.2.3.jar"/>
-	<classpathentry kind="lib" path="lib/sonar-3.3.2/core-plugins/sonar-checkstyle-plugin-3.3.2.jar"/>
-	<classpathentry kind="lib" path="lib/sonar-3.3.2/core-plugins/sonar-cobertura-plugin-3.3.2.jar"/>
-	<classpathentry kind="lib" path="lib/sonar-3.3.2/core-plugins/sonar-core-plugin-3.3.2.jar"/>
-	<classpathentry kind="lib" path="lib/sonar-3.3.2/core-plugins/sonar-cpd-plugin-3.3.2.jar"/>
-	<classpathentry kind="lib" path="lib/sonar-3.3.2/core-plugins/sonar-dbcleaner-plugin-3.3.2.jar"/>
-	<classpathentry kind="lib" path="lib/sonar-3.3.2/core-plugins/sonar-design-plugin-3.3.2.jar"/>
-	<classpathentry kind="lib" path="lib/sonar-3.3.2/core-plugins/sonar-email-notifications-plugin-3.3.2.jar"/>
-	<classpathentry kind="lib" path="lib/sonar-3.3.2/core-plugins/sonar-findbugs-plugin-3.3.2.jar"/>
-	<classpathentry kind="lib" path="lib/sonar-3.3.2/core-plugins/sonar-jacoco-plugin-3.3.2.jar"/>
-	<classpathentry kind="lib" path="lib/sonar-3.3.2/core-plugins/sonar-java-plugin-1.0.jar"/>
-	<classpathentry kind="lib" path="lib/sonar-3.3.2/core-plugins/sonar-l10n-en-plugin-3.3.2.jar"/>
-	<classpathentry kind="lib" path="lib/sonar-3.3.2/core-plugins/sonar-pmd-plugin-3.3.2.jar"/>
-	<classpathentry kind="lib" path="lib/sonar-3.3.2/core-plugins/sonar-squid-java-plugin-1.0.jar"/>
-	<classpathentry kind="lib" path="lib/sonar-3.3.2/core-plugins/sonar-surefire-plugin-3.3.2.jar"/>
 	<classpathentry kind="lib" path="lib/github-api-1.33.jar"/>
+	<classpathentry kind="lib" path="lib/sonar-plugin-api-3.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
