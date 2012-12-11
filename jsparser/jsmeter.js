@@ -76,6 +76,6 @@ exports.jsmeter = (function () {
 	start();
 	
 	return {
-		run : runJsmeter
+		"run" : runJsmeter
 	};
 })();
