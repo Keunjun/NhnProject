@@ -31,7 +31,7 @@ exports.jsmeter = (function () {
 				};
 			complexity.complexity(tree, name);
 			complexity.renderStats(out, "JSON");
-						
+			
 			result = JSON.parse(out.text);
 		} catch (ex) {
 			console.log("exception: " + ex);
@@ -76,6 +76,6 @@ exports.jsmeter = (function () {
 	start();
 	
 	return {
-		"run" : runJsmeter
+		run : runJsmeter
 	};
 })();
