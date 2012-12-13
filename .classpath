@@ -3,11 +3,6 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/github-api-1.33.jar"/>
-	<classpathentry kind="lib" path="lib/sonar-plugin-api-3.2.jar"/>
-	<classpathentry kind="lib" path="lib/commons-beanutils-1.7.0.jar"/>
-	<classpathentry kind="lib" path="lib/commons-collections-3.2.1.jar"/>
-	<classpathentry kind="lib" path="lib/commons-lang-2.5.jar"/>
-	<classpathentry kind="lib" path="lib/commons-logging-1.0.4.jar"/>
 	<classpathentry kind="lib" path="lib/ezmorph-1.0.4.jar"/>
 	<classpathentry kind="lib" path="lib/gson-1.7.2.jar"/>
 	<classpathentry kind="lib" path="lib/httpclient-4.1.2.jar"/>
@@ -19,6 +14,7 @@
 	<classpathentry kind="lib" path="lib/json-lib-2.4-jdk15.jar"/>
 	<classpathentry kind="lib" path="lib/junit-4.8.jar"/>
 	<classpathentry kind="lib" path="lib/org.eclipse.egit.github.core-1.1.2.jar"/>
-	<classpathentry kind="lib" path="lib/sonar-javascript-plugin-1.1.jar"/>
+	<classpathentry kind="lib" path="lib/core-3.3.0-v_771.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.equinox.common-3.6.0.v20100503.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
