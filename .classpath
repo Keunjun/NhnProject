@@ -2,6 +2,8 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.core.runtime-3.6.0.v20100505.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.core.resources.jar"/>
 	<classpathentry kind="lib" path="lib/github-api-1.33.jar"/>
 	<classpathentry kind="lib" path="lib/ezmorph-1.0.4.jar"/>
 	<classpathentry kind="lib" path="lib/gson-1.7.2.jar"/>
@@ -16,5 +18,10 @@
 	<classpathentry kind="lib" path="lib/org.eclipse.egit.github.core-1.1.2.jar"/>
 	<classpathentry kind="lib" path="lib/core-3.3.0-v_771.jar"/>
 	<classpathentry kind="lib" path="lib/org.eclipse.equinox.common-3.6.0.v20100503.jar"/>
+	<classpathentry kind="lib" path="lib/osgi-3.1.1.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.core.jobs-3.5.0.v20100515.jar"/>
+	<classpathentry kind="lib" path="lib/aspectj-1.7.1.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.core.contenttype_3.4.100.v20100505-1235.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.equinox.preferences-3.3.0.v20100503.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
