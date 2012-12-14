@@ -228,7 +228,7 @@ void tab1_treemap ()
 }
 
 void tab1_draw ()
-{
+{ 
   if (tab1_new)
   {
     //rect (150, 70, 730, 275, 2);
@@ -558,7 +558,12 @@ void tab1_retab ()
 {
   noStroke ();
   fill (0.0, 0.0, 1.0);
-  rect (149, 20, 732, 42);
+  rect (130, 0, 772, 62);
+
+  fill (randomHue, 0.15, 0.85);
+  textFont (createFont ("SeoulNamsanEB", 30));
+  textAlign (LEFT);
+  text ("Home", 129, 22);
 
   if (tab1_tn == 0)
   {

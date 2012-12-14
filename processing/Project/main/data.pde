@@ -33,6 +33,11 @@ class Data
   int[][] count = new int[120*12][32];
   int[] count_year_sum = new int[120*12];
 
+  int[] deletion = new int[120*12*5];
+  int[] addition = new int[120*12*5];
+
+  int min, max;
+
   JSONObject idtoname;
   JSONObject filename_numbering;
   int filename_numbering_count;
@@ -40,6 +45,9 @@ class Data
 
   Data ()
   {
+    min = 120*12*5+1;
+    max = -1;
+
     idtoname = new JSONObject ();
     filename_numbering = new JSONObject ();
     filename_numbering_count = 0 ;
@@ -64,6 +72,17 @@ class Data
     }
     loadImage ("https://secure.gravatar.com/avatar/" + pp_id + "?d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-user-420.png", "png").save("/Users/choikeunjun/Desktop/Project/main/avatar/" + pp_id + ".png");
     return false;
+  }
+  
+  int get_number_of_line ( String e )
+  {
+    int count = 1;
+    int i , size = e .length ();
+    for ( i = 0 ; i < size ; i ++ )
+    {
+      if ( e .charAt (i) == '\n' ) count ++ ;
+    }
+    return count ;
   }
 
   void add_data (JSONObject element)
@@ -106,10 +125,21 @@ class Data
       count[dd.getYear()*12+dd.getMonth()][dd.getDate()]++;
       count_year_sum[dd.getYear()*12+dd.getMonth()]++;
       int temp ;
+      if (min > (dd.getYear()*12+dd.getMonth())*5+(dd.getDate()/7)) min = (dd.getYear()*12+dd.getMonth())*5+(dd.getDate()/7);
+      if (max < (dd.getYear()*12+dd.getMonth())*5+(dd.getDate()/7)) max = (dd.getYear()*12+dd.getMonth())*5+(dd.getDate()/7);
+      int ll = get_number_of_line ( files.getJSONObject(i).getString("patch") );
       temp = files.getJSONObject(i).getInt("deletions");
-      if ( temp != -1 ) file[x].deletion += temp;
+      if ( temp != -1 )
+      {
+        file[x].deletion += temp;
+        deletion[(dd.getYear()*12+dd.getMonth())*5+(dd.getDate()/7)] += temp;
+      }
       temp = files.getJSONObject(i).getInt("additions");
-      if ( temp != -1 ) file[x].addition += temp;
+      if ( temp != -1 )
+      {
+        file[x].addition += temp;
+        addition[(dd.getYear()*12+dd.getMonth())*5+(dd.getDate()/7)] += temp;
+      }
       if ( pp_id != "" )
       {
         if ( file[x].ppname_numbering.getInt (pp_id) == -1)
@@ -125,4 +155,3 @@ class Data
     }
   }
 }
-

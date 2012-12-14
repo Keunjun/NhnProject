@@ -51,7 +51,7 @@ class Download extends Thread
     {
       try
       {
-        jj = new JSONObject (readUrl ("https://api.github.com/repos/nforge/nforge4"));
+        jj = new JSONObject (readUrl ("https://api.github.com/repos/"+id+"/"+repo));
         break ;
       }
       catch (Exception e)
@@ -70,7 +70,7 @@ class Download extends Thread
         {
           try
           {
-            job = new JSONArray (readUrl ("https://api.github.com/repos/nforge/nforge4/commits?access_token=e8c4f454ccda7e78f5c9251517bba11f4fa91def"));
+            job = new JSONArray (readUrl ("https://api.github.com/repos/"+id+"/"+repo+"/commits?access_token=e8c4f454ccda7e78f5c9251517bba11f4fa91def"));
             break ;
           }
           catch (Exception e)
@@ -88,7 +88,7 @@ class Download extends Thread
         {
           try
           {
-            job = new JSONArray (readUrl ("https://api.github.com/repos/nforge/nforge4/commits?until=" + formatt.format(dt) + "&access_token=e8c4f454ccda7e78f5c9251517bba11f4fa91def"));
+            job = new JSONArray (readUrl ("https://api.github.com/repos/"+id+"/"+repo+"/commits?until=" + formatt.format(dt) + "&access_token=e8c4f454ccda7e78f5c9251517bba11f4fa91def"));
             break ;
           }
           catch (Exception e)

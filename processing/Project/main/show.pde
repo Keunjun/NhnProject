@@ -7,7 +7,7 @@ int tab_number = 0;
 int tab_now_number = -1;
 int tn = 5;
 String[] tab_name = { 
-  "Home", "Line", "Complexity", "", ""
+  "Home", "Frequency", "Complexity", "", ""
 } 
 ;
 boolean tab_move = false;
