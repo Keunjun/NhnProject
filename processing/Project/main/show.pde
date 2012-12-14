@@ -173,6 +173,15 @@ public class secondApplet extends PApplet
   {
     int i;
 
+    if ( count == 100 )
+    {
+      for ( i = 100 - 23 ; i < 100 ; i ++ )
+      {
+        message [ i - ( 100 - 23 ) ] = message [ i ] ;
+      }
+      count = 23;
+    }
+    
     message[count++] = msg;
 
     background (0.0, 0.0, 1.0);

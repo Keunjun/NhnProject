@@ -1,7 +1,10 @@
 import org.json.*;
 import controlP5.*;
 import java.util.*;
+import java.io.*;
 import java.text.*;
+
+int MAX = 10000;
 
 int page_number=0;
 int now_page_number=-1;

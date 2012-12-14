@@ -1,110 +1,107 @@
 class Data
 {
-  class Commit
+  class FILE
   {
-    String name;
-    String message;
-    Date when;
+    String filename;
+    int commit_count;
 
-    String[] filename;
-    int addition;
     int deletion;
+    int addition;
 
-    int delta_complexity;
-    int delta_line;
+    JSONObject ppname_numbering;
+    int ppname_numbering_count;
+    String[] ppid = new String[MAX];
+    int[] ppcount = new int[MAX];
 
-    Commit (JSONObject info, String[] files)
+    float h, s, b;
+
+    FILE ()
     {
-      name = info.getJSONObject("commit").getJSONObject("author").getString("name");
-      message = info.getJSONObject("commit").getString("message");
-      SimpleDateFormat formatt = new SimpleDateFormat ( "yyyy-MM-dd'T'hh:mm:ss'Z'", Locale.ENGLISH );
-      ParsePosition pos = new ParsePosition ( 0 );
-      when = formatt.parse ( info.getJSONObject("commit").getJSONObject("committer").getString("date"), pos );
-      int d = info.getJSONObject("state").getInt("deletions");
-      if (d>0) deletion+=d;
-      int a = info.getJSONObject("state").getInt("additions");
-      if (a>0) addition+=a;
-
-      JSONArray f = info.getJSONArray("files");
-      int size = f.length (), i;
-      for (i=0 ; i<size ; i++)
-      {
-        JSONObject temp = f.getJSONObject(i);
-        String fn  = temp.getString("filename");
-
-        int line = getline (files [i]);
-
-        if (temp.getString ("status") == "added")
-        {
-          JSONObject ftemp = new JSONObject ();
-          ftemp.put ("line", line);
-          file_name.put (fn, ftemp);
-          delta_line = line;
-        }
-        else
-        {
-          if (temp.getString ("status") == "removed")
-          {
-            file_name.remove (fn);
-            delta_line = (-1) * line;
-          }
-          else
-          {
-            delta_line = line-file_name.getJSONObject(fn).getInt("line");
-            file_name.remove (fn);
-            JSONObject ftemp = new JSONObject ();
-            ftemp.put ("line", line);
-            file_name.put (fn, ftemp);
-          }
-        }
-      }
-    }
-
-    int getline (String con)
-    {
-      int i, count=0;
-
-      for (i=0 ; i<con.length() ; i++)
-      {
-        if (con.charAt(i) == '\n')
-          count++;
-      }
-
-      return count;
-    }
-
-    JSONObject makejson ()
-    {
-      return null;
+      ppname_numbering = new JSONObject ();
+      deletion = addition = 0;
+      commit_count = 0;
+      ppname_numbering_count = 0 ;
     }
   }
 
-  Commit[] a = new Commit[100000];
-  boolean clac_now = false;
-
-  //JSONObject file_sha;
-  JSONObject file_name;
-  JSONObject[] raw_commit = new JSONObject[100000];
-  int raw_count;
+  JSONObject idtoname;
+  JSONObject filename_numbering;
+  int filename_numbering_count;
+  FILE[] file = new FILE[MAX];
 
   Data ()
   {
-    file_name = new JSONObject ();
-    raw_count = 0;
-  }
-
-  void add_data (JSONArray arr)
-  {
-    int size, i;
-    size = arr.length () ;
-    for (i=0 ; i<size ; i++)
-    {
-      raw_commit[raw_count++] = arr.getJSONObject(i);
-    }
+    idtoname = new JSONObject ();
+    filename_numbering = new JSONObject ();
+    filename_numbering_count = 0 ;
   }
   
-  void calc ()
+  PImage load_avatar (String pp_id)
   {
+    File imaged = new File ( "/Users/choikeunjun/Desktop/Project/main/avatar/" + pp_id + ".png" ) ;
+    if ( !imaged.exists() )
+    {
+      loadImage ("https://secure.gravatar.com/avatar/" + pp_id + "?d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-user-420.png", "png").save("/Users/choikeunjun/Desktop/Project/main/avatar/" + pp_id + ".png");
+    }
+    return loadImage ( "/Users/choikeunjun/Desktop/Project/main/avatar/" + pp_id + ".png" ) ;
+  }
+  
+  boolean avatar_isexists (String pp_id)
+  {
+    File imaged = new File ( "/Users/choikeunjun/Desktop/Project/main/avatar/" + pp_id + ".png" ) ;
+    if ( imaged.exists() )
+    {
+      return true;
+    }
+    loadImage ("https://secure.gravatar.com/avatar/" + pp_id + "?d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-user-420.png", "png").save("/Users/choikeunjun/Desktop/Project/main/avatar/" + pp_id + ".png");
+    return false;
+  }
+
+  void add_data (JSONObject element)
+  {
+    tab1_new = true;
+    JSONArray files = element.getJSONArray("files");
+    int i, size = files.length ();
+    String pp_id = "";
+    if ( element.getJSONObject("author") != null )
+    {
+      pp_id = element.getJSONObject("author").getString("gravatar_id");
+    }
+    if (idtoname.getString(pp_id) == "") idtoname.put(pp_id, element.getJSONObject("commit").getJSONObject("author").getString("name"));
+    for ( i = 0 ; i < size ; i ++ )
+    {
+      String fn = files.getJSONObject(i).getString("filename");
+      if ( filename_numbering.getInt (fn) == -1)
+      {
+        filename_numbering.put (fn, filename_numbering_count);
+        file[filename_numbering_count] = new FILE ();
+        file[filename_numbering_count].filename = fn;
+        file[filename_numbering_count].h=random (randomHue-0.1, randomHue+0.1); 
+        file[filename_numbering_count].s=random (0.27, 0.35);
+        file[filename_numbering_count].b=random (0.2, 0.9);
+
+        filename_numbering_count ++;
+      }
+      int x = filename_numbering.getInt (fn);
+      file[x].commit_count ++;
+      int temp ;
+      temp = files.getJSONObject(i).getInt("deletions");
+      if ( temp != -1 ) file[x].deletion += temp;
+      temp = files.getJSONObject(i).getInt("additions");
+      if ( temp != -1 ) file[x].addition += temp;
+      if ( pp_id != "" )
+      {
+        if ( file[x].ppname_numbering.getInt (pp_id) == -1)
+        {
+          avatar_isexists(pp_id);
+          file[x].ppname_numbering.put(pp_id, file[x].ppname_numbering_count);
+          file[x].ppname_numbering_count++;
+        }
+        int y = file[x].ppname_numbering.getInt (pp_id);
+        file[x].ppid[y] = pp_id;
+        file[x].ppcount[y]++;
+      }
+    }
   }
 }
 

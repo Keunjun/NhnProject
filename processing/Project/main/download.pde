@@ -39,49 +39,101 @@ class Download extends Thread
   void run ()
   {
     console.prints("Initializing.....");
-    try
-    {
-      int i=0;
-      JSONArray job = null;
-      JSONObject jj = null;
-      jj = new JSONObject (readUrl ("https://api.github.com/repos/github/hubot"));
-      SimpleDateFormat formatt = new SimpleDateFormat ( "yyyy-MM-dd'T'hh:mm:ss'Z'", Locale.ENGLISH );
-      ParsePosition pos = new ParsePosition ( 0 );
-      Date en = formatt.parse ( jj.getString("created_at"), pos ), dt = null;
-      Date st = null;
 
-      console.prints("Commit Download Start \t\t Repos create at " + formatt.format (en));
-      while (true)
+    int i=0;
+    JSONArray job = null;
+    JSONObject jj = null;
+    SimpleDateFormat formatt = new SimpleDateFormat ( "yyyy-MM-dd'T'hh:mm:ss'Z'", Locale.ENGLISH );
+    ParsePosition pos = new ParsePosition ( 0 );
+    Date dt = null;
+    Date st = null;
+    while ( true )
+    {
+      try
       {
-        if (job == null)
+        jj = new JSONObject (readUrl ("https://api.github.com/repos/github/hubot"));
+        break ;
+      }
+      catch (Exception e)
+      {
+        continue ;
+      }
+    }
+    Date en = formatt.parse ( jj.getString("created_at"), pos );
+
+    console.prints("Commit Download Start \t\t Repos create at " + formatt.format (en));
+    while (true)
+    {
+      if (job == null)
+      {
+        while ( true )
         {
-          job = new JSONArray (readUrl ("https://api.github.com/repos/github/hubot/commits?access_token=e8c4f454ccda7e78f5c9251517bba11f4fa91def"));
-          pos = new ParsePosition ( 0 );
-          st = formatt.parse ( job.getJSONObject(0).getJSONObject("commit").getJSONObject("committer").getString("date"), pos );
-        }
-        else
-        {
-          job = new JSONArray (readUrl ("https://api.github.com/repos/github/hubot/commits?until=" + formatt.format(dt) + "&access_token=e8c4f454ccda7e78f5c9251517bba11f4fa91def"));
+          try
+          {
+            job = new JSONArray (readUrl ("https://api.github.com/repos/github/hubot/commits?access_token=e8c4f454ccda7e78f5c9251517bba11f4fa91def"));
+            break ;
+          }
+          catch (Exception e)
+          {
+            println ("error1");
+            continue ;
+          }
         }
         pos = new ParsePosition ( 0 );
-        dt = formatt.parse ( job.getJSONObject(job.length()-1).getJSONObject("commit").getJSONObject("committer").getString("date"), pos );
-        dt.setTime (dt.getTime () - 1000);
-
-        double perc = (double)(st.getTime() - dt.getTime()) / (double)(st.getTime() - en.getTime()) * 100;
-        console.prints(Integer.toString((int)perc)+"% :: " + "# : "+Integer.toString(i) + " \t\t " + job.getJSONObject(job.length()-1).getJSONObject("commit").getJSONObject("committer").getString("date") + " ~ " + job.getJSONObject(0).getJSONObject("commit").getJSONObject("committer").getString("date"));
-        cominfo.add_data(job);
-        if (job.length () < 30)
-        {
-          console.prints("Download End");
-          break;
-        }
-        i++;
+        st = formatt.parse ( job.getJSONObject(0).getJSONObject("commit").getJSONObject("committer").getString("date"), pos );
       }
-      
-      cominfo.calc();
-    }
-    catch (Exception e)
-    {
+      else
+      {
+        while ( true )
+        {
+          try
+          {
+            job = new JSONArray (readUrl ("https://api.github.com/repos/github/hubot/commits?until=" + formatt.format(dt) + "&access_token=e8c4f454ccda7e78f5c9251517bba11f4fa91def"));
+            break ;
+          }
+          catch (Exception e)
+          {
+            println ("error2");
+            continue ;
+          }
+        }
+      }
+      pos = new ParsePosition ( 0 );
+      dt = formatt.parse ( job.getJSONObject(job.length()-1).getJSONObject("commit").getJSONObject("committer").getString("date"), pos );
+      dt.setTime (dt.getTime () - 1000);
+
+      double perc = (double)(st.getTime() - dt.getTime()) / (double)(st.getTime() - en.getTime()) * 100;
+      console.prints(Integer.toString((int)perc)+"% :: " + "# : "+Integer.toString(i) + " \t\t " + job.getJSONObject(job.length()-1).getJSONObject("commit").getJSONObject("committer").getString("date") + " ~ " + job.getJSONObject(0).getJSONObject("commit").getJSONObject("committer").getString("date"));
+
+      int j;
+      int job_size = job.length ();
+      for ( j = 0 ; j < job_size ; j ++ )
+      {
+        console.prints("    ("+Integer.toString(j+1)+"/"+Integer.toString(job_size)+") ----- "+job.getJSONObject(j).getString("sha"));
+        if ( job.getJSONObject(j).getString("url") != "" )
+        {
+          while ( true )
+          {
+            try
+            {
+              cominfo.add_data (new JSONObject (readUrl (job.getJSONObject(j).getString("url")+"?access_token=e8c4f454ccda7e78f5c9251517bba11f4fa91def")));
+              break ;
+            }
+            catch ( Exception e )
+            {
+              println ("error3 : " + job.getJSONObject(j).getString("url"));
+              continue ;
+            }
+          }
+        }
+      }
+
+      if (job.length () < 30)
+      {
+        console.prints("Download End");
+        break;
+      }
+      i++;
     }
   }
 
