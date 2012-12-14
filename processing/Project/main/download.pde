@@ -9,12 +9,12 @@ String readUrl(String urlString) throws Exception
   try
   {
     URL url = new URL (urlString);
-    reader = new BufferedReader (new InputStreamReader (url.openStream()));
+    reader = new BufferedReader (new InputStreamReader (url.openStream(),"UTF-8"));
     StringBuffer buffer = new StringBuffer ();
     int read;
-    char[] chars = new char[1024];
-    while ( (read = reader.read (chars)) != -1)
-      buffer.append (chars, 0, read);
+    String chars = null;
+    while ( (chars = reader.readLine()) != null)
+      buffer.append (chars);
 
     return buffer.toString ();
   }
@@ -51,7 +51,7 @@ class Download extends Thread
     {
       try
       {
-        jj = new JSONObject (readUrl ("https://api.github.com/repos/github/hubot"));
+        jj = new JSONObject (readUrl ("https://api.github.com/repos/nforge/nforge4"));
         break ;
       }
       catch (Exception e)
@@ -70,7 +70,7 @@ class Download extends Thread
         {
           try
           {
-            job = new JSONArray (readUrl ("https://api.github.com/repos/github/hubot/commits?access_token=e8c4f454ccda7e78f5c9251517bba11f4fa91def"));
+            job = new JSONArray (readUrl ("https://api.github.com/repos/nforge/nforge4/commits?access_token=e8c4f454ccda7e78f5c9251517bba11f4fa91def"));
             break ;
           }
           catch (Exception e)
@@ -88,7 +88,7 @@ class Download extends Thread
         {
           try
           {
-            job = new JSONArray (readUrl ("https://api.github.com/repos/github/hubot/commits?until=" + formatt.format(dt) + "&access_token=e8c4f454ccda7e78f5c9251517bba11f4fa91def"));
+            job = new JSONArray (readUrl ("https://api.github.com/repos/nforge/nforge4/commits?until=" + formatt.format(dt) + "&access_token=e8c4f454ccda7e78f5c9251517bba11f4fa91def"));
             break ;
           }
           catch (Exception e)

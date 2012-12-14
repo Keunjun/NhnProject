@@ -56,3 +56,15 @@ void mousePressed ()
     break;
   }
 }
+
+void keyPressed ()
+{
+  switch (page_number)
+  {
+  case 0:
+    break;
+  case 1: 
+    show_keyPressed(); 
+    break;
+  }
+}

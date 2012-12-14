@@ -1,5 +1,11 @@
 int tab1_tn = 0;
 
+int tab1_bottom_number = 0;
+int tab1_bottom_month = 0;
+int tab1_bottom_month1 = 0;
+int tab1_bottom_day = 0;
+int tab1_bottom_day1 = 1;
+
 class Node
 {
   String k;
@@ -43,6 +49,18 @@ void tab1_setup ()
   noStroke ();
   fill (0.0, 0.0, 1.0);
   rect (130, 0, winW-130, winH);
+
+  strokeWeight (1.5);
+
+  stroke (0.0, 0.0, 0.0);
+  fill (0.0, 0.0, 1.0);
+  rect (149, 69, 731, 276, 2);
+  tab1_new = false;
+
+  fill (randomHue, 0.35, 0.32);
+  textFont (createFont ("SeoulNamsanEB", 20));
+  textAlign (CENTER);
+  text ("LOADING....", 149+731/2, 69+276/2+8);
 
   tab1_retab ();
 }
@@ -134,6 +152,10 @@ void tab1_calc ()
       huff_insert (temp);
     }
   }
+  
+  if (tab1_tn == 1)
+  {
+  }
 
   if ( huff_count > 0 )
   {
@@ -188,6 +210,11 @@ void tab1_treemap ()
         tab1_click_count = 0;
         tab1_click_f = false;
         tab1_click_new = true ;
+        tab1_bottom_number = 0;
+        tab1_bottom_month = 0;
+        tab1_bottom_month1 = 0;
+        tab1_bottom_day = 0;
+        tab1_bottom_day1 = 1;
       }
       tab1_click_i = i;
       fill (box [ i ] .h, box [ i ] .s, tab1_click_b);
@@ -213,11 +240,240 @@ void tab1_draw ()
   }
   else tab1_treemap ();
 
-  stroke (randomHue, 0.35, 0.22);
+  //rect (150, 355, 730, 275, 2);
+
+  if ( tab1_tn == 0 && tab1_click_i != -1 && tab1_click && tab1_bottom_number == 0 )
+  {
+    noStroke();
+    fill (0.0, 0.0, 1.0);
+    rect (150, 355, 731, 275, 2);
+
+    int wn = 24;
+    int max = -1 ;
+    int i, j;
+
+    for ( i = 0, j = cominfo.file[box[tab1_click_i].i].syear * 12 + cominfo.file[box[tab1_click_i].i].smonth - tab1_bottom_month - (wn - 1) ; i < 680 / wn ; i ++ , j ++ )
+    {
+      if ( max < cominfo.file[box[tab1_click_i].i].count_year_sum[j] )
+        max = cominfo.file[box[tab1_click_i].i].count_year_sum[j];
+    }
+
+    max ++ ;
+    int temp = max / 5;
+
+    if ( temp < 1 ) max = 5;
+    temp = max / 5;
+
+    for ( i = 0 ; i < 5 ; i ++ )
+    {
+      stroke (randomHue, 0.25, 1.0);
+      strokeWeight (1);
+      line (200, 355+225-temp/(float)max*i*210, 200+680, 355+225-temp/(float)max*i*210);
+
+      fill (randomHue, 0.35, 0.9);
+      textFont (createFont ("SeoulNamsanEB", 16));
+      textAlign (RIGHT);
+      text (Integer.toString(temp*i), 190, 355+225-temp/(float)max*i*225+7);
+    }
+
+    for ( i = 0, j = cominfo.file[box[tab1_click_i].i].syear * 12 + cominfo.file[box[tab1_click_i].i].smonth - tab1_bottom_month - (wn - 1) ; i < wn ; i ++ , j ++ )
+    {
+      if ( cominfo.file[box[tab1_click_i].i].count_year_sum[j] != 0 )
+      {
+        noStroke ();
+        if ( tab1_bottom_month1 == wn - 1 - i )
+        {
+          fill (randomHue, 0.35, 0.40);
+        }
+        else
+        {
+          fill (randomHue, 0.35, 0.80);
+        }
+        rect (200+(680/wn)*i+2, 355+225-(cominfo.file[box[tab1_click_i].i].count_year_sum[j]/(float)max*210-1), 680/wn-4, (cominfo.file[box[tab1_click_i].i].count_year_sum[j]/(float)max*210));
+      }
+      if ( tab1_bottom_month1 == wn - 1 - i )
+      {
+        fill (randomHue, 0.1, 0.1);
+        ellipse (200+(680/wn)*(i+0.5), 355+225+8, 5, 5);
+      }
+      if ( j % 12 == 0 )
+      {
+        fill (randomHue, 0.35, 0.9);
+        textFont (createFont ("SeoulNamsanEB", 16));
+        textAlign (RIGHT);
+        text (Integer.toString(j/12+1900), 200+(680/wn)*(i+0.5), 355+225+22);
+      }
+    }
+  }
+  
+  if ( tab1_tn == 0 && !tab1_click && tab1_bottom_number == 0 )
+  {
+    noStroke();
+    fill (0.0, 0.0, 1.0);
+    rect (150, 355, 731, 275, 2);
+
+    int wn = 24;
+    int max = -1 ;
+    int i, j;
+    
+    Date a = new Date ();
+
+    for ( i = 0, j = a.getYear() * 12 + a.getMonth() - tab1_bottom_month - (wn - 1) ; i < 680 / wn ; i ++ , j ++ )
+    {
+      if ( max < cominfo.count_year_sum[j] )
+        max = cominfo.count_year_sum[j];
+    }
+
+    max += 3;
+    int temp = max / 5;
+
+    if ( temp < 1 ) max = 5;
+    temp = max / 5;
+
+    for ( i = 0 ; i < 5 ; i ++ )
+    {
+      stroke (randomHue, 0.25, 1.0);
+      strokeWeight (1);
+      line (200, 355+225-temp/(float)max*i*210, 200+680, 355+225-temp/(float)max*i*210);
+
+      fill (randomHue, 0.35, 0.9);
+      textFont (createFont ("SeoulNamsanEB", 16));
+      textAlign (RIGHT);
+      text (Integer.toString(temp*i), 190, 355+225-temp/(float)max*i*210+7);
+    }
+
+    for ( i = 0, j = a.getYear() * 12 + a.getMonth() - tab1_bottom_month - (wn - 1) ; i < wn ; i ++ , j ++ )
+    {
+      if ( cominfo.count_year_sum[j] != 0 )
+      {
+        noStroke ();
+        if ( tab1_bottom_month1 == wn - 1 - i )
+        {
+          fill (randomHue, 0.35, 0.40);
+        }
+        else
+        {
+          fill (randomHue, 0.35, 0.80);
+        }
+        rect (200+(680/wn)*i+2, 355+225-(cominfo.count_year_sum[j]/(float)max*210-1), 680/wn-4, (cominfo.count_year_sum[j]/(float)max*210));
+      }
+      if ( tab1_bottom_month1 == wn - 1 - i )
+      {
+        fill (randomHue, 0.1, 0.1);
+        ellipse (200+(680/wn)*(i+0.5), 355+225+8, 5, 5);
+      }
+      if ( j % 12 == 0 )
+      {
+        fill (randomHue, 0.35, 0.9);
+        textFont (createFont ("SeoulNamsanEB", 16));
+        textAlign (RIGHT);
+        text (Integer.toString(j/12+1900), 200+(680/wn)*(i+0.5), 355+225+22);
+      }
+    }
+  }
+
+  if ( tab1_tn == 0 && !tab1_click && tab1_bottom_number == 1 )
+  {
+    noStroke();
+    fill (0.0, 0.0, 1.0);
+    rect (150, 355, 731, 275, 2);
+
+    int wn = 31;
+    int max = -1 ;
+    int i, j;
+
+    Date a = new Date ();
+    
+    for ( i = 1 ; i <= 31 ; i ++ )
+    {
+      if ( max < cominfo.count[a.getYear() * 12 + a.getMonth() - tab1_bottom_month - tab1_bottom_month1][i] )
+        max = cominfo.count[a.getYear() * 12 + a.getMonth() - tab1_bottom_month - tab1_bottom_month1][i];
+    }
+
+    max += 3 ;
+    int temp = max / 5;
+
+    if ( temp < 1 ) max = 5;
+    temp = max / 5;
+
+    for ( i = 0 ; i < 5 ; i ++ )
+    {
+      stroke (randomHue, 0.25, 1.0);
+      strokeWeight (1);
+      line (200, 355+225-temp/(float)max*i*210, 200+680, 355+225-temp/(float)max*i*210);
+
+      fill (randomHue, 0.35, 0.9);  
+      textFont (createFont ("SeoulNamsanEB", 16));
+      textAlign (RIGHT);
+      text (Integer.toString(temp*i), 190, 355+225-temp/(float)max*i*210+7);
+    }
+
+    for ( i = 1 ; i <= 31 ; i ++ )
+    {
+      if ( cominfo.count[a.getYear() * 12 + a.getMonth() - tab1_bottom_month - tab1_bottom_month1][i] != 0 )
+      {
+        noStroke ();
+        fill (randomHue, 0.35, 0.80);
+        rect (200+(682/wn)*(i-1)+2, 355+225-(cominfo.count[a.getYear() * 12 + a.getMonth() - tab1_bottom_month - tab1_bottom_month1][i]/(float)max*210-1), 682/wn-4, (cominfo.count[a.getYear() * 12 + a.getMonth() - tab1_bottom_month - tab1_bottom_month1][i]/(float)max*210));
+      }
+      fill (randomHue, 0.35, 0.9);
+      textFont (createFont ("SeoulNamsanEB", 10));
+      textAlign (CENTER);
+      text (Integer.toString(i), 200+(682/wn)*(i-1+0.5), 355+225+11);
+    }
+  }
+  
+  if ( tab1_tn == 0 && tab1_click_i != -1 && tab1_click && tab1_bottom_number == 1 )
+  {
+    noStroke();
+    fill (0.0, 0.0, 1.0);
+    rect (150, 355, 731, 275, 2);
+
+    int wn = 31;
+    int max = -1 ;
+    int i, j;
+
+    for ( i = 1 ; i <= 31 ; i ++ )
+    {
+      if ( max < cominfo.file[box[tab1_click_i].i].count[cominfo.file[box[tab1_click_i].i].syear * 12 + cominfo.file[box[tab1_click_i].i].smonth - tab1_bottom_month - tab1_bottom_month1][i] )
+        max = cominfo.file[box[tab1_click_i].i].count[cominfo.file[box[tab1_click_i].i].syear * 12 + cominfo.file[box[tab1_click_i].i].smonth - tab1_bottom_month - tab1_bottom_month1][i];
+    }
+
+    max ++ ;
+    int temp = max / 5;
+
+    if ( temp < 1 ) max = 5;
+    temp = max / 5;
+
+    for ( i = 0 ; i < 5 ; i ++ )
+    {
+      stroke (randomHue, 0.25, 1.0);
+      strokeWeight (1);
+      line (200, 355+225-temp/(float)max*i*210, 200+680, 355+225-temp/(float)max*i*210);
+
+      fill (randomHue, 0.35, 0.9);  
+      textFont (createFont ("SeoulNamsanEB", 16));
+      textAlign (RIGHT);
+      text (Integer.toString(temp*i), 190, 355+225-temp/(float)max*i*210+7);
+    }
+
+    for ( i = 1 ; i <= 31 ; i ++ )
+    {
+      if ( cominfo.file[box[tab1_click_i].i].count[cominfo.file[box[tab1_click_i].i].syear * 12 + cominfo.file[box[tab1_click_i].i].smonth - tab1_bottom_month - tab1_bottom_month1][i] != 0 )
+      {
+        noStroke ();
+        fill (randomHue, 0.35, 0.80);
+        rect (200+(682/wn)*(i-1)+2, 355+225-(cominfo.file[box[tab1_click_i].i].count[cominfo.file[box[tab1_click_i].i].syear * 12 + cominfo.file[box[tab1_click_i].i].smonth - tab1_bottom_month - tab1_bottom_month1][i]/(float)max*210-1), 682/wn-4, (cominfo.file[box[tab1_click_i].i].count[cominfo.file[box[tab1_click_i].i].syear * 12 + cominfo.file[box[tab1_click_i].i].smonth - tab1_bottom_month - tab1_bottom_month1][i]/(float)max*210));
+      }
+      fill (randomHue, 0.35, 0.9);
+      textFont (createFont ("SeoulNamsanEB", 10));
+      textAlign (CENTER);
+      text (Integer.toString(i), 200+(682/wn)*(i-1+0.5), 355+225+11);
+    }
+  }
+
   fill (0.0, 0.0, 1.0);
   stroke (0.0, 0.0, 0.0);
-
-  //rect (150, 355, 730, 275, 2);
 
   if ( tab1_tn == 0 && tab1_click_i != -1 && tab1_click )
   {
@@ -231,10 +487,10 @@ void tab1_draw ()
       fill (0.0, 0.0, 0.0);
       if (box[tab1_click_i].k.length() >= 24)
       {
-        textFont (createFont ("SeoulNamsanB", 20*24/box[tab1_click_i].k.length()));
+        textFont (createFont ("SeoulNamsanB", 19*24/box[tab1_click_i].k.length()));
       }
       else 
-        textFont (createFont ("SeoulNamsanB", 20));
+        textFont (createFont ("SeoulNamsanB", 19));
       text (box[tab1_click_i].k, 922, 61);
 
       fill (randomHue, 0.35, 0.82);
@@ -278,10 +534,10 @@ void tab1_draw ()
         textFont (createFont ("SeoulNamsanB", 15));
         textAlign (LEFT);
         text (cominfo.idtoname.getString(cominfo.file[box[tab1_click_i].i].ppid[i]), 988, 80 + 78 * i + 17);
-        
+
         fill (randomHue, 0.35, 0.5);
         rect (988, 80 + 78 * i + 30, (float)cominfo.file[box[tab1_click_i].i].ppcount[i]/sum*142, 30);
-        
+
         fill (0.0, 0.0, 0.0);
         textFont (createFont ("SeoulNamsanEB", 15));
         textAlign (LEFT);
@@ -293,6 +549,7 @@ void tab1_draw ()
   }
   else
   {
+    strokeWeight (1.5);
     rect (900, 20, 280, 610, 2);
   }
 }
@@ -355,11 +612,84 @@ void tab1_mousePressed ()
   }
   else
   {
+    noStroke();
+    fill (0.0, 0.0, 1.0);
+    rect (150, 355, 731, 275, 2);
+
     tab1_click_i = -1;
     tab1_click_count = 0;
     tab1_click = false;
     tab1_click_f = false;
     tab1_click_new = false;
+  }
+}
+
+void tab1_keyPressed()
+{
+  if ( tab1_tn == 0 && tab1_bottom_number == 0 )
+  {
+    if (key == CODED)
+    {
+      if (keyCode == UP)
+      {
+        tab1_bottom_number = 1 ;
+      }
+      if (keyCode == LEFT)
+      {
+        if ( tab1_bottom_month1 == 23 )
+        {
+          tab1_bottom_month++;
+        }
+        else
+        {
+          tab1_bottom_month1++;
+        }
+      }
+      if (keyCode == RIGHT)
+      {
+        if ( tab1_bottom_month1 == 0 )
+        {
+          tab1_bottom_month--;
+        }
+        else
+        {
+          tab1_bottom_month1--;
+        }
+      }
+    }
+  }
+
+  if ( tab1_tn == 0 && tab1_bottom_number == 1 )
+  {
+    if (key == CODED)
+    {
+      if (keyCode == DOWN)
+      {
+        tab1_bottom_number = 0 ;
+      }
+      if (keyCode == LEFT)
+      {
+        if ( tab1_bottom_day == 31 )
+        {
+          tab1_bottom_day++;
+        }
+        else
+        {
+          tab1_bottom_day1++;
+        }
+      }
+      if (keyCode == RIGHT)
+      {
+        if ( tab1_bottom_day1 == 1 )
+        {
+          tab1_bottom_day--;
+        }
+        else
+        {
+          tab1_bottom_day1--;
+        }
+      }
+    }
   }
 }
 

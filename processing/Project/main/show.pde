@@ -199,3 +199,17 @@ public class secondApplet extends PApplet
   }
 }
 
+void show_keyPressed ()
+{
+  switch (tab_number)
+  {
+  case 0:
+    tab1_keyPressed ();
+    break;
+  case 1:
+    break;
+  case 2:
+    break;
+  }
+}
+

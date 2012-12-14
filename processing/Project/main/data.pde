@@ -8,6 +8,12 @@ class Data
     int deletion;
     int addition;
 
+    int syear;
+    int smonth;
+
+    int[][] count = new int[120*12][32];
+    int[] count_year_sum = new int[120*12];
+
     JSONObject ppname_numbering;
     int ppname_numbering_count;
     String[] ppid = new String[MAX];
@@ -24,6 +30,9 @@ class Data
     }
   }
 
+  int[][] count = new int[120*12][32];
+  int[] count_year_sum = new int[120*12];
+
   JSONObject idtoname;
   JSONObject filename_numbering;
   int filename_numbering_count;
@@ -35,7 +44,7 @@ class Data
     filename_numbering = new JSONObject ();
     filename_numbering_count = 0 ;
   }
-  
+
   PImage load_avatar (String pp_id)
   {
     File imaged = new File ( "/Users/choikeunjun/Desktop/Project/main/avatar/" + pp_id + ".png" ) ;
@@ -45,7 +54,7 @@ class Data
     }
     return loadImage ( "/Users/choikeunjun/Desktop/Project/main/avatar/" + pp_id + ".png" ) ;
   }
-  
+
   boolean avatar_isexists (String pp_id)
   {
     File imaged = new File ( "/Users/choikeunjun/Desktop/Project/main/avatar/" + pp_id + ".png" ) ;
@@ -71,6 +80,11 @@ class Data
     for ( i = 0 ; i < size ; i ++ )
     {
       String fn = files.getJSONObject(i).getString("filename");
+
+      SimpleDateFormat formatt = new SimpleDateFormat ( "yyyy-MM-dd'T'hh:mm:ss'Z'", Locale.ENGLISH );
+      ParsePosition pos = new ParsePosition ( 0 );
+      Date dd = formatt.parse ( element.getJSONObject("commit").getJSONObject("author").getString("date"), pos );
+
       if ( filename_numbering.getInt (fn) == -1)
       {
         filename_numbering.put (fn, filename_numbering_count);
@@ -80,10 +94,17 @@ class Data
         file[filename_numbering_count].s=random (0.27, 0.35);
         file[filename_numbering_count].b=random (0.2, 0.9);
 
+        file[filename_numbering_count].syear = dd.getYear();
+        file[filename_numbering_count].smonth = dd.getMonth();
+
         filename_numbering_count ++;
       }
       int x = filename_numbering.getInt (fn);
       file[x].commit_count ++;
+      file[x].count[dd.getYear()*12+dd.getMonth()][dd.getDate()]++;
+      file[x].count_year_sum[dd.getYear()*12+dd.getMonth()]++;
+      count[dd.getYear()*12+dd.getMonth()][dd.getDate()]++;
+      count_year_sum[dd.getYear()*12+dd.getMonth()]++;
       int temp ;
       temp = files.getJSONObject(i).getInt("deletions");
       if ( temp != -1 ) file[x].deletion += temp;
