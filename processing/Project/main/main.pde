@@ -5,6 +5,7 @@ import java.io.*;
 import java.text.*;
 
 int MAX = 10000;
+int PPMAX = 100;
 
 int page_number=0;
 int now_page_number=-1;

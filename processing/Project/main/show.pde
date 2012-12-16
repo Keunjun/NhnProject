@@ -207,6 +207,7 @@ void show_keyPressed ()
     tab1_keyPressed ();
     break;
   case 1:
+    tab2_keyPressed ();
     break;
   case 2:
     break;

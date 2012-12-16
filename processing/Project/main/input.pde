@@ -83,6 +83,9 @@ void input_mousePressed ()
   {
     id = input_textfield.get (Textfield.class, "id").getText ();
     repo = input_textfield.get (Textfield.class, "repo").getText ();
+    
+    id = "github";
+    repo = "hubot";
 
     input_end ();
     page_number=1;
